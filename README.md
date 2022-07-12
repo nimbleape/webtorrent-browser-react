@@ -14,3 +14,6 @@ Paste in a magnet link and click 'Start download'.
 
 #### Seeding
 Select one or more files to start seeding. Copy the magnet link and share it with a WebTorrent client to initiate transfer.
+
+### Licence
+This software is provided with MIT licence.

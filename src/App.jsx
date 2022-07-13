@@ -106,9 +106,14 @@ function App() {
     setDownloading(true);
     const startTime = new Date();
 
+    let downloadStartTime = null;
     const handleTorrentDone = (torrent) => {
       let updatesCounter = 0;
       torrent.on('download', () => {
+        if (!downloadStartTime) {
+          downloadStartTime = new Date();
+        }
+
         const newDLSpeed = (torrent.downloadSpeed / 1024 / 1024).toFixed(2);
         const newDLProgress = (torrent.progress * 100).toFixed(1);
         if (updatesCounter % 2000 === 0) {
@@ -122,8 +127,10 @@ function App() {
         setDownloading(false);
         setDownloadCompleted(true);
         const endTime = new Date();
-        const secondsElapsed = ((endTime - startTime) / 1000).toFixed(3);
-        addLogs(`DL complete. Elapsed time: ${secondsElapsed} s`)
+        const totTime = ((endTime - startTime) / 1000).toFixed(3);
+        const idleTime = ((downloadStartTime - startTime) / 1000).toFixed(3);
+        const transferTime = ((endTime - downloadStartTime) / 1000).toFixed(3);
+        addLogs(`DL complete. TOT time: ${totTime}s - Transfer: ${transferTime}s - Idle: ${idleTime}s`)
 
         let fileLinks = [];
         torrent.files.forEach(f => {
